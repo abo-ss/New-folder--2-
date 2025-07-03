@@ -1,166 +1,172 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>نموذج الحجز</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 20px;
-            direction: rtl;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #ffffff;
-            padding: 25px 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #333;
-        }
-        label {
-            display: block;
-            margin: 12px 0 6px;
-            font-weight: bold;
-            color: #555;
-        }
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 18px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        #thankyou-message {
-            display: none;
-            color: green;
-            margin-top: 15px;
-            text-align: right;
-            font-weight: bold;
-            white-space: pre-line; /* للحفاظ على التنسيق */
-        }
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            input,
-            select,
-            button,
-            textarea {
-                font-size: 14px;
-                padding: 10px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نموذج الحجز</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+      direction: rtl;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+      color: #555;
+    }
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    #thankyou-message {
+      display: none;
+      color: green;
+      margin-top: 15px;
+      text-align: right;
+      font-weight: bold;
+      white-space: pre-line;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>نموذج الحجز</h1>
-        <form id="booking-form" action="https://formsubmit.co/aboslem159159@gmail.com" method="POST" enctype="multipart/form-data">
-            <label for="name">الاسم الكامل:</label>
-            <input type="text" id="name" name="name" required />
+  <div class="container">
+    <h1>نموذج الحجز</h1>
+    <form id="booking-form" action="https://formsubmit.co/aboslem159159@gmail.com" method="POST">
+      <label for="name">الاسم الكامل:</label>
+      <input type="text" id="name" name="name" required />
 
-            <label for="email">البريد الإلكتروني:</label>
-            <input type="email" id="email" name="email" required />
+      <label for="email">البريد الإلكتروني:</label>
+      <input type="email" id="email" name="email" required />
 
-            <label for="phone">رقم الهاتف:</label>
-            <input type="tel" id="phone" name="phone" required />
+      <label for="phone">رقم الهاتف:</label>
+      <input type="tel" id="phone" name="phone" required />
 
-            <label for="date">تاريخ الحجز:</label>
-            <input type="date" id="date" name="date" required />
+      <label for="date">تاريخ الحجز:</label>
+      <input type="date" id="date" name="date" required />
 
-            <label for="time">وقت الحجز:</label>
-            <select id="time" name="time" required>
-                <option value="">اختر الوقت</option>
-                <option value="08:00">08:00 صباحاً</option>
-                <option value="08:30">08:30 صباحاً</option>
-                <option value="09:00">09:00 صباحاً</option>
-                <option value="09:30">09:30 صباحاً</option>
-                <option value="10:00">10:00 صباحاً</option>
-                <option value="10:30">10:30 صباحاً</option>
-                <option value="11:00">11:00 صباحاً</option>
-                <option value="11:30">11:30 صباحاً</option>
-                <option value="12:00">12:00 ظهراً</option>
-                <option value="12:30">12:30 ظهراً</option>
-                <option value="13:00">01:00 ظهراً</option>
-            </select>
+      <label for="time">وقت الحجز:</label>
+      <select id="time" name="time" required>
+        <option value="">اختر الوقت</option>
+        <option value="10:00">10:00 صباحاً</option>
+        <option value="10:30">10:30 صباحاً</option>
+        <option value="11:00">11:00 صباحاً</option>
+        <option value="11:30">11:30 صباحاً</option>
+        <option value="12:00">12:00 ظهراً</option>
+        <option value="12:30">12:30 ظهراً</option>
+        <option value="13:00">01:00 ظهراً</option>
+        <option value="13:30">01:30 ظهراً</option>
+        <option value="14:00">02:00 ظهراً</option>
+        <option value="14:30">02:30 ظهراً</option>
+        <option value="15:00">03:00 عصراً</option>
+        <option value="15:30">03:30 عصراً</option>
+        <option value="16:00">04:00 عصراً</option>
+        <option value="16:30">04:30 عصراً</option>
+        <option value="17:00">05:00 مساءً</option>
+        <option value="17:30">05:30 مساءً</option>
+        <option value="18:00">06:00 مساءً</option>
+        <option value="18:30">06:30 مساءً</option>
+        <option value="19:00">07:00 مساءً</option>
+        <option value="19:30">07:30 مساءً</option>
+        <option value="20:00">08:00 مساءً</option>
+        <option value="20:30">08:30 مساءً</option>
+        <option value="21:00">09:00 مساءً</option>
+        <option value="21:30">09:30 مساءً</option>
+        <option value="22:00">10:00 مساءً</option>
+        <option value="22:30">10:30 مساءً</option>
+        <option value="23:00">11:00 مساءً</option>
+        <option value="23:30">11:30 مساءً</option>
+        <option value="00:00">12:00 صباحاً</option>
+        <option value="00:30">12:30 صباحاً</option>
+        <option value="01:00">01:00 صباحاً</option>
+      </select>
 
-            <button type="submit">أرسل الطلب</button>
-        </form>
-        <div id="thankyou-message"></div>
-    </div>
+      <input type="hidden" name="_captcha" value="false" />
+      <button type="submit">أرسل الطلب</button>
+    </form>
+    <div id="thankyou-message"></div>
+  </div>
 
-    <script>
-        const form = document.getElementById('booking-form');
-        const thankYouMessage = document.getElementById('thankyou-message');
+  <script>
+    const form = document.getElementById('booking-form');
+    const thankYouMessage = document.getElementById('thankyou-message');
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // منع الإرسال الفوري
+    function generateBookingNumber() {
+      return Math.floor(100000 + Math.random() * 900000);
+    }
 
-            // قراءة البيانات من الحقول
-            const name = form.name.value;
-            const email = form.email.value;
-            const phone = form.phone.value;
-            const date = form.date.value;
-            const time = form.time.value;
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
 
-            // عرض رسالة مخصصة مع البيانات
-            thankYouMessage.style.display = 'block';
-            thankYouMessage.textContent = 
-                `شكراً لك، ${name}!\n` +
-                `تم استلام طلب حجزك بنجاح.\n\n` +
-                `تفاصيل الحجز:\n` +
-                `رقم الهاتف: ${phone}\n` +
-                `البريد الإلكتروني: ${email}\n` +
-                `التاريخ: ${date}\n` +
-                `الوقت: ${time}`;
+      const name = form.name.value;
+      const email = form.email.value;
+      const phone = form.phone.value;
+      const date = form.date.value;
+      const time = form.time.value;
+      const bookingNumber = generateBookingNumber();
 
-            // إرسال النموذج فعليًا (بدون إعادة تحميل الصفحة)
-            // عن طريق إنشاء FormData وإرسالها بـ fetch:
-            const formData = new FormData(form);
-            fetch(form.action, {
-                method: form.method,
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    form.reset();
-                } else {
-                    thankYouMessage.textContent = 'حدث خطأ أثناء إرسال الطلب، حاول مرة أخرى.';
-                }
-            })
-            .catch(() => {
-                thankYouMessage.textContent = 'حدث خطأ أثناء إرسال الطلب، حاول مرة أخرى.';
-            });
-        });
-    </script>
+      const message =
+        `شكراً لك يا ${name}!\n` +
+        `تم استلام طلب الحجز الخاص بك.\n` +
+        `رقم الحجز: ${bookingNumber}\n\n` +
+        `📅 التاريخ: ${date}\n🕓 الوقت: ${time}\n📞 الهاتف: ${phone}\n📧 الإيميل: ${email}`;
+
+      thankYouMessage.style.display = 'block';
+      thankYouMessage.textContent = message;
+
+      const formData = new FormData(form);
+      formData.append('رقم الحجز', bookingNumber);
+
+      fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      }).then(response => {
+        if (response.ok) {
+          form.reset();
+        } else {
+          thankYouMessage.textContent = 'حدث خطأ أثناء الإرسال، حاول مرة أخرى.';
+        }
+      }).catch(() => {
+        thankYouMessage.textContent = 'تعذر الاتصال بالخادم.';
+      });
+    });
+  </script>
 </body>
-</html>           
+</html>
