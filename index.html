@@ -1,86 +1,81 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>نموذج الحجز</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f2f2f2;
-      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
       padding: 20px;
     }
-
     .container {
       max-width: 600px;
       margin: auto;
-      background: white;
+      background: #fff;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-
-    h1 {
+    h2 {
       text-align: center;
       color: #333;
     }
-
     label {
       display: block;
-      margin: 10px 0 5px;
+      margin-top: 15px;
       font-weight: bold;
     }
-
     input, select, button {
       width: 100%;
       padding: 12px;
+      margin-top: 5px;
       margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 16px;
-      box-sizing: border-box;
     }
-
     button {
       background-color: #28a745;
       color: white;
+      font-weight: bold;
       border: none;
-      transition: background-color 0.3s ease;
+      cursor: pointer;
     }
-
     button:hover {
       background-color: #218838;
     }
-
-    .success {
-      background-color: #d4edda;
-      color: #155724;
+    .message {
       padding: 15px;
+      background: #d4edda;
+      color: #155724;
+      display: none;
+      margin-top: 10px;
       border-radius: 6px;
-      margin-top: 20px;
-      white-space: pre-line;
+      text-align: center;
     }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h1>نموذج الحجز</h1>
-    <form id="booking-form">
-      <label for="name">الاسم الكامل:</label>
-      <input type="text" id="name" required>
+    <h2>نموذج الحجز</h2>
+    <form action="https://usebasin.com/f/d69196c5c039" method="POST" id="booking-form">
+      <label>الاسم الكامل:</label>
+      <input type="text" name="name" required>
 
-      <label for="email">البريد الإلكتروني:</label>
-      <input type="email" id="email" required>
+      <label>البريد الإلكتروني:</label>
+      <input type="email" name="email" required>
 
-      <label for="phone">رقم الهاتف:</label>
-      <input type="tel" id="phone" required>
+      <label>رقم الهاتف:</label>
+      <input type="tel" name="phone" required>
 
-      <label for="date">تاريخ الحجز:</label>
-      <input type="date" id="date" required>
+      <label>تاريخ الحجز:</label>
+      <input type="date" name="date" required>
 
-      <label for="time">وقت الحجز:</label>
-      <select id="time" required>
+      <label>وقت الحجز:</label>
+      <select name="time" required>
         <option value="">اختر الوقت</option>
         <option value="10:00">10:00 صباحاً</option>
         <option value="11:00">11:00 صباحاً</option>
@@ -100,58 +95,20 @@
         <option value="01:00">01:00 صباحاً</option>
       </select>
 
-      <button type="submit">إرسال الطلب</button>
+      <button type="submit">أرسل الطلب</button>
     </form>
 
-    <div class="success" id="result" style="display:none;"></div>
+    <div class="message" id="success-message">✅ تم إرسال طلبك بنجاح!</div>
   </div>
 
   <script>
-    const form = document.getElementById("booking-form");
-    const result = document.getElementById("result");
+    const form = document.getElementById('booking-form');
+    const successMessage = document.getElementById('success-message');
 
-    // جلب الحجوزات من localStorage
-    function getBookings() {
-      return JSON.parse(localStorage.getItem("bookings") || "[]");
-    }
-
-    // حفظ حجز جديد
-    function saveBooking(booking) {
-      const bookings = getBookings();
-      bookings.push(booking);
-      localStorage.setItem("bookings", JSON.stringify(bookings));
-    }
-
-    // حساب رقم العميل بناء على الترتيب
-    function getClientNumber(date, time) {
-      const bookings = getBookings().filter(b => b.date === date);
-      bookings.sort((a, b) => a.time.localeCompare(b.time));
-      const index = bookings.findIndex(b => b.time === time);
-      return index + 1;
-    }
-
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const name = form.name.value.trim();
-      const email = form.email.value.trim();
-      const phone = form.phone.value.trim();
-      const date = form.date.value;
-      const time = form.time.value;
-
-      const newBooking = { name, email, phone, date, time };
-      saveBooking(newBooking);
-
-      const clientNumber = getClientNumber(date, time);
-
-      result.style.display = "block";
-      result.textContent =
-        `✅ تم الحجز بنجاح!\n\n` +
-        `📌 رقم العميل: ${clientNumber}\n` +
-        `👤 الاسم: ${name}\n📧 البريد: ${email}\n📞 الهاتف: ${phone}\n📅 التاريخ: ${date}\n⏰ الوقت: ${time}`;
-
-      form.reset();
+    form.addEventListener('submit', function () {
+      successMessage.style.display = 'block';
     });
   </script>
+
 </body>
 </html>
