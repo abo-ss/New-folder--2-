@@ -117,6 +117,7 @@
         <option value="01:00">01:00 صباحاً</option>
       </select>
 
+      <!-- منع الكابتشا -->
       <input type="hidden" name="_captcha" value="false" />
       <button type="submit">أرسل الطلب</button>
     </form>
@@ -124,14 +125,18 @@
   </div>
 
   <script>
-    const form = document.getElementById('booking-form');
-    const thankYouMessage = document.getElementById('thankyou-message');
+    const form = document.getElementById("booking-form");
+    const thankYouMessage = document.getElementById("thankyou-message");
 
-    function generateBookingNumber() {
-      return Math.floor(100000 + Math.random() * 900000);
+    // رقم العميل حسب الترتيب
+    function getClientNumber() {
+      let lastClientNumber = localStorage.getItem("lastClientNumber") || 0;
+      let nextClientNumber = parseInt(lastClientNumber) + 1;
+      localStorage.setItem("lastClientNumber", nextClientNumber);
+      return nextClientNumber;
     }
 
-    form.addEventListener('submit', function (event) {
+    form.addEventListener("submit", function (event) {
       event.preventDefault();
 
       const name = form.name.value;
@@ -139,32 +144,32 @@
       const phone = form.phone.value;
       const date = form.date.value;
       const time = form.time.value;
-      const bookingNumber = generateBookingNumber();
+      const clientNumber = getClientNumber();
 
       const message =
         `شكراً لك يا ${name}!\n` +
-        `تم استلام طلب الحجز الخاص بك.\n` +
-        `رقم الحجز: ${bookingNumber}\n\n` +
+        `تم استلام حجزك بنجاح.\n` +
+        `🔢 رقم العميل: ${clientNumber}\n` +
         `📅 التاريخ: ${date}\n🕓 الوقت: ${time}\n📞 الهاتف: ${phone}\n📧 الإيميل: ${email}`;
 
-      thankYouMessage.style.display = 'block';
+      thankYouMessage.style.display = "block";
       thankYouMessage.textContent = message;
 
       const formData = new FormData(form);
-      formData.append('رقم الحجز', bookingNumber);
+      formData.append("رقم العميل", clientNumber);
 
       fetch(form.action, {
-        method: 'POST',
+        method: "POST",
         body: formData,
-        headers: { Accept: 'application/json' },
+        headers: { Accept: "application/json" },
       }).then(response => {
         if (response.ok) {
           form.reset();
         } else {
-          thankYouMessage.textContent = 'حدث خطأ أثناء الإرسال، حاول مرة أخرى.';
+          thankYouMessage.textContent = "حدث خطأ أثناء الإرسال، حاول مرة أخرى.";
         }
       }).catch(() => {
-        thankYouMessage.textContent = 'تعذر الاتصال بالخادم.';
+        thankYouMessage.textContent = "تعذر الاتصال بالخادم.";
       });
     });
   </script>
