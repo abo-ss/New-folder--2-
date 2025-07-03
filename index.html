@@ -56,6 +56,14 @@
         button:hover {
             background-color: #218838;
         }
+        #thankyou-message {
+            display: none;
+            color: green;
+            margin-top: 15px;
+            text-align: right;
+            font-weight: bold;
+            white-space: pre-line; /* للحفاظ على التنسيق */
+        }
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -73,11 +81,7 @@
 <body>
     <div class="container">
         <h1>نموذج الحجز</h1>
-        <form
-            action="https://formsubmit.co/aboslem159159@gmail.com"
-            method="POST"
-            enctype="multipart/form-data"
-        >
+        <form id="booking-form" action="https://formsubmit.co/aboslem159159@gmail.com" method="POST" enctype="multipart/form-data">
             <label for="name">الاسم الكامل:</label>
             <input type="text" id="name" name="name" required />
 
@@ -108,6 +112,55 @@
 
             <button type="submit">أرسل الطلب</button>
         </form>
+        <div id="thankyou-message"></div>
     </div>
+
+    <script>
+        const form = document.getElementById('booking-form');
+        const thankYouMessage = document.getElementById('thankyou-message');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // منع الإرسال الفوري
+
+            // قراءة البيانات من الحقول
+            const name = form.name.value;
+            const email = form.email.value;
+            const phone = form.phone.value;
+            const date = form.date.value;
+            const time = form.time.value;
+
+            // عرض رسالة مخصصة مع البيانات
+            thankYouMessage.style.display = 'block';
+            thankYouMessage.textContent = 
+                `شكراً لك، ${name}!\n` +
+                `تم استلام طلب حجزك بنجاح.\n\n` +
+                `تفاصيل الحجز:\n` +
+                `رقم الهاتف: ${phone}\n` +
+                `البريد الإلكتروني: ${email}\n` +
+                `التاريخ: ${date}\n` +
+                `الوقت: ${time}`;
+
+            // إرسال النموذج فعليًا (بدون إعادة تحميل الصفحة)
+            // عن طريق إنشاء FormData وإرسالها بـ fetch:
+            const formData = new FormData(form);
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    form.reset();
+                } else {
+                    thankYouMessage.textContent = 'حدث خطأ أثناء إرسال الطلب، حاول مرة أخرى.';
+                }
+            })
+            .catch(() => {
+                thankYouMessage.textContent = 'حدث خطأ أثناء إرسال الطلب، حاول مرة أخرى.';
+            });
+        });
+    </script>
 </body>
-                    </html>
+</html>           
