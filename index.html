@@ -1,154 +1,177 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>نموذج الحجز</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f2f2f2;
       padding: 20px;
     }
     .container {
       max-width: 600px;
       margin: auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    label {
+    label, input, select, button {
       display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    input, select {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      margin: 10px 0;
+      font-size: 16px;
     }
     button {
-      width: 100%;
-      padding: 12px;
       background-color: #28a745;
       color: white;
+      padding: 10px;
       border: none;
-      border-radius: 6px;
-      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
     }
     table {
       width: 100%;
-      margin-top: 30px;
       border-collapse: collapse;
+      margin-top: 20px;
     }
     th, td {
-      border: 1px solid #ddd;
       padding: 10px;
+      border: 1px solid #ddd;
       text-align: center;
     }
-    th {
-      background-color: #eee;
+    #admin-section {
+      display: none;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h2 style="text-align:center;">نموذج الحجز</h2>
+  <h2>نموذج الحجز</h2>
   <form id="booking-form">
-    <label for="name">الاسم الكامل:</label>
+    <label>الاسم الكامل:</label>
     <input type="text" id="name" required>
-
-    <label for="phone">رقم الهاتف:</label>
-    <input type="tel" id="phone" required>
-
-    <label for="email">البريد الإلكتروني:</label>
+    <label>البريد الإلكتروني:</label>
     <input type="email" id="email" required>
-
-    <label for="date">تاريخ الحجز:</label>
+    <label>رقم الهاتف:</label>
+    <input type="tel" id="phone" required>
+    <label>تاريخ الحجز:</label>
     <input type="date" id="date" required>
-
-    <label for="time">وقت الحجز:</label>
-    <input type="time" id="time" required>
-
-    <button type="submit">احجز الآن</button>
+    <label>وقت الحجز:</label>
+    <select id="time" required>
+      <option value="">اختر الوقت</option>
+      <option value="10:00">10:00 صباحاً</option>
+      <option value="11:00">11:00 صباحاً</option>
+      <option value="12:00">12:00 ظهراً</option>
+      <option value="13:00">01:00 ظهراً</option>
+      <option value="14:00">02:00 ظهراً</option>
+      <option value="15:00">03:00 عصراً</option>
+      <option value="16:00">04:00 عصراً</option>
+      <option value="17:00">05:00 مساءً</option>
+      <option value="18:00">06:00 مساءً</option>
+      <option value="19:00">07:00 مساءً</option>
+      <option value="20:00">08:00 مساءً</option>
+      <option value="21:00">09:00 مساءً</option>
+      <option value="22:00">10:00 مساءً</option>
+      <option value="23:00">11:00 مساءً</option>
+      <option value="00:00">12:00 صباحاً</option>
+      <option value="01:00">01:00 صباحاً</option>
+    </select>
+    <button type="submit">إرسال</button>
   </form>
+</div>
 
-  <div id="booking-list">
-    <h3 style="margin-top:30px;">كل الحجوزات:</h3>
-    <table id="bookings-table">
-      <thead>
-        <tr>
-          <th>رقم الحجز</th>
-          <th>الاسم</th>
-          <th>الهاتف</th>
-          <th>الإيميل</th>
-          <th>التاريخ</th>
-          <th>الوقت</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+<div class="container">
+  <h3>لوحة الإدارة</h3>
+  <input type="password" id="admin-password" placeholder="ادخل كلمة السر لعرض الحجوزات" />
+  <button onclick="checkPassword()">عرض الحجوزات</button>
+</div>
+
+<div class="container" id="admin-section">
+  <h3>جميع الحجوزات</h3>
+  <table id="bookingsTable">
+    <thead>
+      <tr>
+        <th>رقم</th>
+        <th>الاسم</th>
+        <th>الهاتف</th>
+        <th>الإيميل</th>
+        <th>التاريخ</th>
+        <th>الوقت</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <button onclick="exportToExcel()">تحميل Excel</button>
 </div>
 
 <script>
   const form = document.getElementById('booking-form');
-  const tableBody = document.querySelector('#bookings-table tbody');
+  const bookingsTableBody = document.querySelector('#bookingsTable tbody');
+  const adminSection = document.getElementById('admin-section');
+  const PASSWORD = 'admin123'; // غيرها كما تشاء
 
-  function convertTo12Hour(timeStr) {
-    const [hour, minute] = timeStr.split(':');
-    let h = parseInt(hour);
-    const ampm = h >= 12 ? 'مساءً' : 'صباحاً';
-    h = h % 12 || 12;
-    return `${h}:${minute} ${ampm}`;
-  }
+  let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
 
-  function loadBookings() {
-    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-
+  function saveAndRenderBookings() {
     bookings.sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
-
-    tableBody.innerHTML = '';
-    bookings.forEach((booking, index) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${booking.name}</td>
-        <td>${booking.phone}</td>
-        <td>${booking.email}</td>
-        <td>${booking.date}</td>
-        <td>${convertTo12Hour(booking.time)}</td>
-      `;
-      tableBody.appendChild(row);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+    bookingsTableBody.innerHTML = '';
+    bookings.forEach((b, i) => {
+      bookingsTableBody.innerHTML += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${b.name}</td>
+          <td>${b.phone}</td>
+          <td>${b.email}</td>
+          <td>${b.date}</td>
+          <td>${b.time}</td>
+        </tr>`;
     });
   }
 
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
     const newBooking = {
       name: document.getElementById('name').value,
-      phone: document.getElementById('phone').value,
       email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
       date: document.getElementById('date').value,
       time: document.getElementById('time').value
     };
-
-    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
     bookings.push(newBooking);
-    localStorage.setItem('bookings', JSON.stringify(bookings));
-
+    saveAndRenderBookings();
+    alert('تم إرسال الحجز بنجاح!');
     form.reset();
-    loadBookings();
-    alert("✅ تم الحجز بنجاح!");
   });
 
-  loadBookings();
+  function checkPassword() {
+    const inputPass = document.getElementById('admin-password').value;
+    if (inputPass === PASSWORD) {
+      adminSection.style.display = 'block';
+      saveAndRenderBookings();
+    } else {
+      alert('كلمة السر غير صحيحة');
+    }
+  }
+
+  function exportToExcel() {
+    let csv = \"رقم,الاسم,الهاتف,الإيميل,التاريخ,الوقت\\n\";
+    bookings.forEach((b, i) => {
+      csv += `${i + 1},${b.name},${b.phone},${b.email},${b.date},${b.time}\\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'حجوزات.csv';
+    link.click();
+  }
 </script>
 
 </body>
