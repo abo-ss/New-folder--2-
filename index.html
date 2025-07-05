@@ -2,113 +2,159 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>نموذج الحجز</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #f2f2f2;
       padding: 20px;
     }
     .container {
       max-width: 600px;
       margin: auto;
       background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      color: #333;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
     label {
       display: block;
-      margin-top: 15px;
+      margin-top: 10px;
       font-weight: bold;
     }
-    input, select, button {
+    input, select {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       margin-top: 5px;
       margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 6px;
-      font-size: 16px;
     }
     button {
+      width: 100%;
+      padding: 12px;
       background-color: #28a745;
       color: white;
-      font-weight: bold;
       border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #218838;
-    }
-    .message {
-      padding: 15px;
-      background: #d4edda;
-      color: #155724;
-      display: none;
-      margin-top: 10px;
       border-radius: 6px;
+      font-size: 16px;
+    }
+    table {
+      width: 100%;
+      margin-top: 30px;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
       text-align: center;
+    }
+    th {
+      background-color: #eee;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h2>نموذج الحجز</h2>
-    <form action="https://usebasin.com/f/032c48d0b745" method="POST" id="booking-form">
-      <label>الاسم الكامل:</label>
-      <input type="text" name="name" required>
+<div class="container">
+  <h2 style="text-align:center;">نموذج الحجز</h2>
+  <form id="booking-form">
+    <label for="name">الاسم الكامل:</label>
+    <input type="text" id="name" required>
 
-      <label>البريد الإلكتروني:</label>
-      <input type="email" name="email" required>
+    <label for="phone">رقم الهاتف:</label>
+    <input type="tel" id="phone" required>
 
-      <label>رقم الهاتف:</label>
-      <input type="tel" name="phone" required>
+    <label for="email">البريد الإلكتروني:</label>
+    <input type="email" id="email" required>
 
-      <label>تاريخ الحجز:</label>
-      <input type="date" name="date" required>
+    <label for="date">تاريخ الحجز:</label>
+    <input type="date" id="date" required>
 
-      <label>وقت الحجز:</label>
-      <select name="time" required>
-        <option value="">اختر الوقت</option>
-        <option value="10:00">10:00 صباحاً</option>
-        <option value="11:00">11:00 صباحاً</option>
-        <option value="12:00">12:00 ظهراً</option>
-        <option value="13:00">01:00 ظهراً</option>
-        <option value="14:00">02:00 ظهراً</option>
-        <option value="15:00">03:00 عصراً</option>
-        <option value="16:00">04:00 عصراً</option>
-        <option value="17:00">05:00 مساءً</option>
-        <option value="18:00">06:00 مساءً</option>
-        <option value="19:00">07:00 مساءً</option>
-        <option value="20:00">08:00 مساءً</option>
-        <option value="21:00">09:00 مساءً</option>
-        <option value="22:00">10:00 مساءً</option>
-        <option value="23:00">11:00 مساءً</option>
-        <option value="00:00">12:00 صباحاً</option>
-        <option value="01:00">01:00 صباحاً</option>
-      </select>
+    <label for="time">وقت الحجز:</label>
+    <input type="time" id="time" required>
 
-      <button type="submit">أرسل الطلب</button>
-    </form>
+    <button type="submit">احجز الآن</button>
+  </form>
 
-    <div class="message" id="success-message">✅ تم إرسال طلبك بنجاح!</div>
-  </div>
+  <table id="bookings-table">
+    <thead>
+      <tr>
+        <th>رقم الحجز</th>
+        <th>الاسم</th>
+        <th>الهاتف</th>
+        <th>الإيميل</th>
+        <th>التاريخ</th>
+        <th>الوقت</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
 
-  <script>
-    const form = document.getElementById('booking-form');
-    const successMessage = document.getElementById('success-message');
+<script>
+  const form = document.getElementById('booking-form');
+  const tableBody = document.querySelector('#bookings-table tbody');
 
-    form.addEventListener('submit', function () {
-      successMessage.style.display = 'block';
+  function loadBookings() {
+    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+
+    // ترتيب حسب التاريخ والوقت
+    bookings.sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
+
+    // إعادة تعيين الأرقام
+    bookings.forEach((booking, index) => booking.number = index + 1);
+
+    // عرض الجدول
+    tableBody.innerHTML = '';
+    bookings.forEach(booking => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${booking.number}</td>
+        <td>${booking.name}</td>
+        <td>${booking.phone}</td>
+        <td>${booking.email}</td>
+        <td>${booking.date}</td>
+        <td>${convertTo12Hour(booking.time)}</td>
+      `;
+      tableBody.appendChild(row);
     });
-  </script>
+
+    // حفظ الترتيب الجديد
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+  }
+
+  function convertTo12Hour(timeStr) {
+    const [hour, minute] = timeStr.split(':');
+    let h = parseInt(hour);
+    const ampm = h >= 12 ? 'مساءً' : 'صباحاً';
+    h = h % 12 || 12;
+    return `${h}:${minute} ${ampm}`;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const booking = {
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      email: document.getElementById('email').value,
+      date: document.getElementById('date').value,
+      time: document.getElementById('time').value,
+    };
+
+    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    bookings.push(booking);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+
+    loadBookings();
+    form.reset();
+    alert("تم الحجز بنجاح ✅");
+  });
+
+  loadBookings(); // تحميل البيانات عند فتح الصفحة
+</script>
 
 </body>
 </html>
