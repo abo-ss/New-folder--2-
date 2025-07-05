@@ -78,52 +78,27 @@
     <button type="submit">احجز الآن</button>
   </form>
 
-  <table id="bookings-table">
-    <thead>
-      <tr>
-        <th>رقم الحجز</th>
-        <th>الاسم</th>
-        <th>الهاتف</th>
-        <th>الإيميل</th>
-        <th>التاريخ</th>
-        <th>الوقت</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div id="booking-list">
+    <h3 style="margin-top:30px;">كل الحجوزات:</h3>
+    <table id="bookings-table">
+      <thead>
+        <tr>
+          <th>رقم الحجز</th>
+          <th>الاسم</th>
+          <th>الهاتف</th>
+          <th>الإيميل</th>
+          <th>التاريخ</th>
+          <th>الوقت</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </div>
 
 <script>
   const form = document.getElementById('booking-form');
   const tableBody = document.querySelector('#bookings-table tbody');
-
-  function loadBookings() {
-    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-
-    // ترتيب حسب التاريخ والوقت
-    bookings.sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
-
-    // إعادة تعيين الأرقام
-    bookings.forEach((booking, index) => booking.number = index + 1);
-
-    // عرض الجدول
-    tableBody.innerHTML = '';
-    bookings.forEach(booking => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${booking.number}</td>
-        <td>${booking.name}</td>
-        <td>${booking.phone}</td>
-        <td>${booking.email}</td>
-        <td>${booking.date}</td>
-        <td>${convertTo12Hour(booking.time)}</td>
-      `;
-      tableBody.appendChild(row);
-    });
-
-    // حفظ الترتيب الجديد
-    localStorage.setItem('bookings', JSON.stringify(bookings));
-  }
 
   function convertTo12Hour(timeStr) {
     const [hour, minute] = timeStr.split(':');
@@ -133,27 +108,47 @@
     return `${h}:${minute} ${ampm}`;
   }
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+  function loadBookings() {
+    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
 
-    const booking = {
+    bookings.sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`));
+
+    tableBody.innerHTML = '';
+    bookings.forEach((booking, index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${booking.name}</td>
+        <td>${booking.phone}</td>
+        <td>${booking.email}</td>
+        <td>${booking.date}</td>
+        <td>${convertTo12Hour(booking.time)}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const newBooking = {
       name: document.getElementById('name').value,
       phone: document.getElementById('phone').value,
       email: document.getElementById('email').value,
       date: document.getElementById('date').value,
-      time: document.getElementById('time').value,
+      time: document.getElementById('time').value
     };
 
     let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-    bookings.push(booking);
+    bookings.push(newBooking);
     localStorage.setItem('bookings', JSON.stringify(bookings));
 
-    loadBookings();
     form.reset();
-    alert("تم الحجز بنجاح ✅");
+    loadBookings();
+    alert("✅ تم الحجز بنجاح!");
   });
 
-  loadBookings(); // تحميل البيانات عند فتح الصفحة
+  loadBookings();
 </script>
 
 </body>
