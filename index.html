@@ -1,84 +1,113 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>تسجيل دخول بالبريد وكلمة المرور</title>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<style>
-body { font-family:"Roboto",sans-serif; background:#f1f3f4; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
-.container { background:white; padding:30px; border-radius:15px; width:90%; max-width:400px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,0.2); animation:fadeIn 1s ease; }
-h2{margin-bottom:20px; color:#202124;}
-input { width:90%; padding:10px; margin:10px 0; border-radius:5px; border:1px solid #ccc; font-size:16px; }
-button { padding:12px 25px; border:none; border-radius:8px; background:#4285f4; color:white; font-weight:bold; cursor:pointer; transition:0.2s; }
-button:hover { background:#357ae8; transform:scale(1.05); }
-#popup,#winner { display:none; position:fixed; top:0; left:0; width:100%; height:100%; justify-content:center; align-items:center; background:rgba(0,0,0,0.6); animation:fadeIn 0.5s ease; }
-.message { background:#fff; padding:25px 35px; border-radius:15px; text-align:center; font-weight:bold; box-shadow:0 4px 15px rgba(0,0,0,0.25); animation:popupScale 0.4s ease; }
-@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
-@keyframes popupScale { from{transform:scale(0.5); opacity:0;} to{transform:scale(1); opacity:1;} }
-</style>
+  <meta charset="UTF-8">
+  <title>متجر صالون أبو سالم</title>
+  <style>
+    body { font-family: Tahoma, sans-serif; margin:0; background:#f5f5f5; }
+    header { background:#131921; color:white; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; }
+    header h1 { color:#FFD700; font-size:28px; font-weight:bold; margin:0; }
+    header input { width:40%; padding:6px; border:none; border-radius:4px; }
+    header .cart { font-size:20px; cursor:pointer; }
+
+    nav { background:#232f3e; padding:10px; text-align:center; }
+    nav a { color:white; margin:0 15px; text-decoration:none; font-size:15px; }
+    nav a:hover { text-decoration:underline; }
+
+    .products { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:20px; padding:20px; }
+    .product { background:white; padding:15px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); text-align:center; }
+    .product img { max-width:100%; height:200px; object-fit:cover; border-radius:8px; }
+    .product h2 { font-size:16px; margin:10px 0; color:#333; }
+    .product p { font-size:13px; color:#555; min-height:40px; }
+    .price { color:#b12704; font-weight:bold; margin:10px 0; font-size:15px; }
+    .btn { background:#FFD700; color:black; padding:8px 15px; border-radius:5px; text-decoration:none; font-size:14px; font-weight:bold; }
+    .btn:hover { background:#e6c200; }
+
+    footer { background:#232f3e; color:white; text-align:center; padding:20px; margin-top:20px; font-size:14px; }
+
+    /* Popup Login */
+    .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
+    .login-box { background:white; padding:30px; border-radius:10px; width:300px; text-align:center; }
+    .login-box h2 { margin-bottom:20px; color:#131921; }
+    .login-box input { width:90%; margin:10px 0; padding:10px; border:1px solid #ccc; border-radius:5px; }
+    .login-box button { background:#FFD700; border:none; padding:10px 20px; border-radius:5px; font-weight:bold; cursor:pointer; }
+    .login-box button:hover { background:#e6c200; }
+    .close { position:absolute; top:20px; right:20px; font-size:24px; color:white; cursor:pointer; }
+  </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>تسجيل دخول</h2>
-  <input type="email" id="email" placeholder="البريد الإلكتروني" />
-  <input type="password" id="password" placeholder="كلمة المرور" />
-  <button onclick="login()">تسجيل الدخول</button>
-</div>
-
-<!-- popup النجاح -->
-<div id="popup">
-  <div class="message">
-    ✔ تم تسجيل الدخول بنجاح!<br>
-    اضغط على زر "لقد ضغطت موافق" للمضي قدماً.
-    <br>
-    <button onclick="showWinner()">لقد ضغطت موافق</button>
+<header>
+  <h1>متجر صالون أبو سالم</h1>
+  <input type="text" placeholder="ابحث عن المنتجات...">
+  <div>
+    <a href="#" id="loginBtn" style="color:white; margin-right:15px;">تسجيل الدخول</a>
+    <span class="cart">🛒</span>
   </div>
-</div>
+</header>
 
-<!-- popup الفوز -->
-<div id="winner">
-  <div class="message">
-    🎉 مبروك! لقد فزت بالجائزة! 🎉
-    <br>
-    <button onclick="closeWinner()">إغلاق</button>
+<nav>
+  <a href="#">الرئيسية</a>
+  <a href="#">المنتجات</a>
+  <a href="#">تواصل معنا</a>
+</nav>
+
+<section class="products">
+  <!-- المنتج الأول -->
+  <div class="product">
+    <img src="https://i.postimg.cc/T12rjZKn/Screenshot-2025-08-25-03-47-17-753.jpg" alt="كريم VERB">
+    <h2>كريم تثبيت الشعر VERB</h2>
+    <p>لمعان وقوة مع زيوت طبيعية 100% – تثبيت يدوم طوال اليوم</p>
+    <div class="price">80 جنيه</div>
+    <a href="https://wa.me/201145858299?text=مرحباً%20" target="_blank" class="btn">اطلب الآن</a>
   </div>
+
+  <!-- منتج قادم -->
+  <div class="product">
+    <img src="https://i.imgur.com/xyz456.jpg" alt="منتج قادم">
+    <h2>منتج قادم</h2>
+    <p>وصف قصير للمنتج القادم – سيتم إضافته قريبًا</p>
+    <div class="price">-- جنيه</div>
+    <a href="#" class="btn">قريبًا</a>
+  </div>
+</section>
+
+<footer>
+  📞 الهاتف / واتساب: 01145858299<br>
+  تابعنا على فيسبوك و إنستجرام<br>
+  © 2025 متجر صالون أبو سالم
+</footer>
+
+<!-- Popup تسجيل الدخول -->
+<div class="overlay" id="overlay">
+  <div class="login-box">
+    <h2>تسجيل الدخول</h2>
+    <input type="text" placeholder="اسم المستخدم">
+    <input type="password" placeholder="كلمة المرور">
+    <button>دخول</button>
+  </div>
+  <div class="close" id="closeBtn">&times;</div>
 </div>
 
 <script>
-const firebaseConfig = {
-    apiKey: "AIzaSyAc1ox5N630L4lABhJAwulOyNYF_utZqDk",
-    authDomain: "abosalem-74b3f.firebaseapp.com",
-    projectId: "abosalem-74b3f",
-    storageBucket: "abosalem-74b3f.appspot.com",
-    messagingSenderId: "318873565811",
-    appId: "1:318873565811:web:0a28afae0617313a2d4806",
-    measurementId: "G-P31N1EJFPL"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+  const overlay = document.getElementById('overlay');
+  const loginBtn = document.getElementById('loginBtn');
+  const closeBtn = document.getElementById('closeBtn');
 
-function login(){
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    auth.signInWithEmailAndPassword(email,password)
-    .then(userCredential=>{
-        document.getElementById('popup').style.display='flex';
-    })
-    .catch(error=>{
-        alert("خطأ: "+error.message);
-    });
-}
+  loginBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    overlay.style.display = 'flex';
+  });
 
-function showWinner(){
-    document.getElementById('popup').style.display='none';
-    document.getElementById('winner').style.display='flex';
-}
+  closeBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+  });
 
-function closeWinner(){
-    document.getElementById('winner').style.display='none';
-}
+  window.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.style.display = 'none';
+    }
+  });
 </script>
 
 </body>
