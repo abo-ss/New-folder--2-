@@ -1,114 +1,64 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>متجر صالون أبو سالم</title>
-  <style>
-    body { font-family: Tahoma, sans-serif; margin:0; background:#f5f5f5; }
-    header { background:#131921; color:white; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; }
-    header h1 { color:#FFD700; font-size:28px; font-weight:bold; margin:0; }
-    header input { width:40%; padding:6px; border:none; border-radius:4px; }
-    header .cart { font-size:20px; cursor:pointer; }
-
-    nav { background:#232f3e; padding:10px; text-align:center; }
-    nav a { color:white; margin:0 15px; text-decoration:none; font-size:15px; }
-    nav a:hover { text-decoration:underline; }
-
-    .products { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:20px; padding:20px; }
-    .product { background:white; padding:15px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); text-align:center; }
-    .product img { max-width:100%; height:200px; object-fit:cover; border-radius:8px; }
-    .product h2 { font-size:16px; margin:10px 0; color:#333; }
-    .product p { font-size:13px; color:#555; min-height:40px; }
-    .price { color:#b12704; font-weight:bold; margin:10px 0; font-size:15px; }
-    .btn { background:#FFD700; color:black; padding:8px 15px; border-radius:5px; text-decoration:none; font-size:14px; font-weight:bold; }
-    .btn:hover { background:#e6c200; }
-
-    footer { background:#232f3e; color:white; text-align:center; padding:20px; margin-top:20px; font-size:14px; }
-
-    /* Popup Login */
-    .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
-    .login-box { background:white; padding:30px; border-radius:10px; width:300px; text-align:center; }
-    .login-box h2 { margin-bottom:20px; color:#131921; }
-    .login-box input { width:90%; margin:10px 0; padding:10px; border:1px solid #ccc; border-radius:5px; }
-    .login-box button { background:#FFD700; border:none; padding:10px 20px; border-radius:5px; font-weight:bold; cursor:pointer; }
-    .login-box button:hover { background:#e6c200; }
-    .close { position:absolute; top:20px; right:20px; font-size:24px; color:white; cursor:pointer; }
-  </style>
+<meta charset="utf-8" />
+<title>رخصة نشاط تجاري - صالون أبو سالم</title>
+<style>
+  @page { size: A4; margin: 20mm; }
+  body { font-family: "Tahoma", "Arial", sans-serif; background:#f6f7fb; color:#111; margin:0; }
+  .license { width: 800px; max-width: 95%; margin: 24px auto; background:#fff;
+    border: 2px solid #0b6; border-radius: 16px; padding: 28px 24px 32px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.06); }
+  .hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom: 16px; }
+  .hdr .right { text-align:right }
+  .emblem { width: 76px; height: 76px; border:2px solid #0b6; border-radius: 50%;
+    display:flex; align-items:center; justify-content:center; font-weight:700; color:#0b6; }
+  h1 { margin: 8px 0 4px; font-size: 28px; }
+  .sub { color:#444; font-size: 14px; }
+  .meta { margin: 18px 0; display:grid; grid-template-columns: 1fr 1fr; gap: 10px 18px;
+    border:1px dashed #cfe; padding: 14px; border-radius: 12px; background:#fafffd; }
+  .meta div { display:flex; gap:8px; }
+  .label { color:#555; min-width: 140px; }
+  .val { font-weight:600; }
+  .footer { margin-top: 28px; display:flex; align-items:flex-end; justify-content:space-between; }
+  .sign { text-align:center; width: 260px; }
+  .sign .line { margin: 32px 0 6px; border-bottom:1px solid #999; height:1px; }
+  .stamp { width: 120px; height: 120px; border:2px dashed #0b6; border-radius: 16px; opacity:.7;
+    display:flex; align-items:center; justify-content:center; font-weight:700; color:#0b6;
+    transform: rotate(-8deg); }
+  .note { font-size: 12px; color:#666; margin-top: 10px; }
+  @media print { body { background:#fff; } .license { box-shadow:none; } }
+</style>
 </head>
 <body>
+  <section class="license">
+    <div class="hdr">
+      <div class="emblem">ترخيص</div>
+      <div class="right">
+        <h1>رخصة نشاط تجاري</h1>
+        <div class="sub">صادرة لأغراض التحقق من بيانات النشاط</div>
+      </div>
+    </div>
 
-<header>
-  <h1>متجر صالون أبو سالم</h1>
-  <input type="text" placeholder="ابحث عن المنتجات...">
-  <div>
-    <a href="#" id="loginBtn" style="color:white; margin-right:15px;">تسجيل الدخول</a>
-    <span class="cart">🛒</span>
-  </div>
-</header>
+    <div class="meta">
+      <div><span class="label">اسم النشاط التجاري:</span><span class="val">صالون أبو سالم</span></div>
+      <div><span class="label">اسم المالك:</span><span class="val">أبو سالم</span></div>
+      <div><span class="label">العنوان:</span><span class="val">منية سمنود، الدقهلية، مصر</span></div>
+      <div><span class="label">رقم الرخصة:</span><span class="val">2025/001</span></div>
+      <div><span class="label">تاريخ الإصدار:</span><span class="val">31-08-2025</span></div>
+      <div><span class="label">تاريخ الانتهاء:</span><span class="val">31-08-2026</span></div>
+      <div><span class="label">نوع النشاط:</span><span class="val">صالون حلاقة وتجميل</span></div>
+      <div><span class="label">البريد/الهاتف (اختياري):</span><span class="val">—</span></div>
+    </div>
 
-<nav>
-  <a href="#">الرئيسية</a>
-  <a href="#">المنتجات</a>
-  <a href="#">تواصل معنا</a>
-</nav>
-
-<section class="products">
-  <!-- المنتج الأول -->
-  <div class="product">
-    <img src="https://i.postimg.cc/T12rjZKn/Screenshot-2025-08-25-03-47-17-753.jpg" alt="كريم VERB">
-    <h2>كريم تثبيت الشعر VERB</h2>
-    <p>لمعان وقوة مع زيوت طبيعية 100% – تثبيت يدوم طوال اليوم</p>
-    <div class="price">80 جنيه</div>
-    <a href="https://wa.me/201145858299?text=مرحباً%20" target="_blank" class="btn">اطلب الآن</a>
-  </div>
-
-  <!-- منتج قادم -->
-  <div class="product">
-    <img src="https://i.imgur.com/xyz456.jpg" alt="منتج قادم">
-    <h2>منتج قادم</h2>
-    <p>وصف قصير للمنتج القادم – سيتم إضافته قريبًا</p>
-    <div class="price">-- جنيه</div>
-    <a href="#" class="btn">قريبًا</a>
-  </div>
-</section>
-
-<footer>
-  📞 الهاتف / واتساب: 01145858299<br>
-  تابعنا على فيسبوك و إنستجرام<br>
-  © 2025 متجر صالون أبو سالم
-</footer>
-
-<!-- Popup تسجيل الدخول -->
-<div class="overlay" id="overlay">
-  <div class="login-box">
-    <h2>تسجيل الدخول</h2>
-    <input type="text" placeholder="اسم المستخدم">
-    <input type="password" placeholder="كلمة المرور">
-    <button>دخول</button>
-  </div>
-  <div class="close" id="closeBtn">&times;</div>
-</div>
-
-<script>
-  const overlay = document.getElementById('overlay');
-  const loginBtn = document.getElementById('loginBtn');
-  const closeBtn = document.getElementById('closeBtn');
-
-  loginBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    overlay.style.display = 'flex';
-  });
-
-  closeBtn.addEventListener('click', () => {
-    overlay.style.display = 'none';
-  });
-
-  window.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      overlay.style.display = 'none';
-    }
-  });
-</script>
-
+    <div class="footer">
+      <div class="sign">
+        <div class="line"></div>
+        <div>توقيع وختم الجهة المختصة</div>
+      </div>
+      <div class="stamp">ختم إلكتروني</div>
+    </div>
+    <div class="note">ملاحظة: يجب أن يطابق الاسم والعنوان ما هو مذكور في الملف التجاري لدى الجهة الطالبة.</div>
+  </section>
 </body>
 </html>
